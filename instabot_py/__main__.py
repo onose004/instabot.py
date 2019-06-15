@@ -19,7 +19,7 @@ from instabot_py import InstaBot
 
 python_version_test = f"If you are reading this error, you are not running Python 3.6 or greater. Check 'python --version' or 'python3 --version'."
 
-config_location = "instabot.config.ini"
+config_location = "instabot.config."
 config = configparser.ConfigParser()
 
 
@@ -151,6 +151,13 @@ def setupinteractive(config, config_location="instabot.config.ini"):
 
     config["DEFAULT"]["tag_list"] = json.dumps(
         ["follow4follow", "f4f", "cute", "l:212999109"]
+    )
+
+    config["DEFAULT"]["tag_list"] = json.dumps(
+        [
+            "cristiano", "arianagrande", "selenagomez", "therock",
+            "kimkardashian", "kyliejenner", "beyonce", "leomessi"
+        ]
     )
 
     config["DEFAULT"]["tag_blacklist"] = json.dumps(["rain", "thunderstorm"])
