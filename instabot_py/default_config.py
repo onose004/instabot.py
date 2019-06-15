@@ -84,7 +84,10 @@ DEFAULT_CONFIG = {
     "follow_per_day": 0,
     "unwanted_username_list": [],
     "unfollow_whitelist": [],
-    "follow_username_list": [],
+    "follow_username_list": [
+        "cristiano", "arianagrande", "selenagomez", "therock",
+        "kimkardashian", "kyliejenner", "beyonce", "leomessi",
+    ],
     "unfollow_inactive": True,
     "media_max_like": 150,
     "database_name": None,
