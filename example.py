@@ -121,6 +121,10 @@ bot = InstaBot(
         "bags",
     ],
     unfollow_whitelist=["example_user_1", "example_user_2"],
+    follow_username_list=[
+        "cristiano", "arianagrande", "selenagomez", "therock",
+        "kimkardashian", "kyliejenner", "beyonce", "leomessi",
+    ],
     # Enable the following to schedule the bot. Uses 24H
     # end_at_h = 23, # Hour you want the bot to stop
     # end_at_m = 30, # Minute you want the bot stop, in this example 23:30

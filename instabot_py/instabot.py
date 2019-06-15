@@ -77,6 +77,7 @@ class InstaBot:
         self.tag_blacklist = config.get("tag_blacklist")
         self.unfollow_whitelist = config.get("unfollow_whitelist")
         self.comment_list = config.get("comment_list")
+        self.follow_username_list = config.get("follow_username_list")
 
         self.instaloader = instaloader.Instaloader()
 
@@ -822,7 +823,7 @@ class InstaBot:
                 # ------------------- Unlike -------------------
                 self.new_auto_mod_unlike()
                 # ------------------- Follow -------------------
-                self.new_auto_mod_follow()
+                self.follow_with_determine_target_method()
                 # ------------------- Unfollow -------------------
                 self.new_auto_mod_unfollow()
                 # ------------------- Comment -------------------
@@ -960,6 +961,95 @@ class InstaBot:
                 self.next_iteration["Follow"] = time.time() + self.add_time(
                     self.follow_delay
                 )
+
+    def new_auto_mod_follow_with_username(self, target_user):
+        try:
+            id_get_by_target_username = self.get_user_id_by_username(target_user)
+        except:
+            self.logger.debug(f"Cannot get id of {target_user})")
+            return
+        username = None
+        if time.time() < self.next_iteration["Follow"]:
+            return
+        if (
+            time.time() > self.next_iteration["Follow"]
+            and self.follow_per_day != 0
+            and len(self.media_by_tag) > 0
+        ):
+            if id_get_by_target_username == self.user_id:
+                self.logger.debug("Keep calm - It's your own profile ;)")
+                return
+
+            if self.user_min_follow != 0 or self.user_max_follow != 0:
+                try:
+                    username = target_user
+                    url = self.url_user_detail % (username)
+                    r = self.s.get(url)
+                    all_data = json.loads(
+                        re.search(
+                            "window._sharedData = (.*?);</script>", r.text, re.DOTALL
+                        ).group(1)
+                    )
+                    followers = all_data["entry_data"]["ProfilePage"][0]["graphql"][
+                        "user"
+                    ]["edge_followed_by"]["count"]
+
+                    if followers < self.user_min_follow:
+                        self.logger.info(
+                            f"Won't follow {username}: does not meet user_min_follow requirement"
+                        )
+                        return
+
+                    if self.user_max_follow != 0 and followers > self.user_max_follow:
+                        self.logger.info(
+                            f"Won't follow {username}: does not meet user_max_follow requirement"
+                        )
+                        return
+
+                except Exception:
+                    pass
+            if (
+                    self.persistence.check_already_followed(
+                        user_id=id_get_by_target_username
+                    )
+            ):
+                self.logger.debug(
+                    f"Already followed before {id_get_by_target_username}"
+                )
+                self.next_iteration["Follow"] = time.time() + self.add_time(
+                    self.follow_delay / 2
+                )
+                return
+
+            log_string = (
+                f"Trying to follow: {id_get_by_target_username}"
+            )
+            self.logger.debug(log_string)
+            self.next_iteration["Follow"] = time.time() + self.add_time(
+                self.follow_delay
+            )
+
+            if (
+                    self.follow(
+                        user_id=id_get_by_target_username,
+                        username=username,
+                    )
+                    is not False
+            ):
+                self.bot_follow_list.append(
+                    [id_get_by_target_username, time.time()]
+                )
+                self.next_iteration["Follow"] = time.time() + self.add_time(
+                    self.follow_delay
+                )
+
+    def follow_with_determine_target_method(self):
+        true_or_false = [True, False]
+        if len(self.follow_username_list) == 0 or random.choice(true_or_false):
+            self.new_auto_mod_follow()
+        else:
+            target_user = random.choice(self.follow_username_list)
+            self.new_auto_mod_follow_with_username(target_user)
 
     def populate_from_feed(self):
         self.get_media_id_recent_feed()
