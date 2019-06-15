@@ -79,6 +79,7 @@ The `%username%.session` file stores your session with Instagram to avoid re-log
 | media_min_like       | int | Minimum number of likes on photos to like (set to 0 to disable) | 0    |
 | follow_per_day       | int | Users to follow per day                              | 0    |
 | follow_time          | int | Seconds to wait before unfollowing                   | 5 * 60 * 60 |
+| follow_username_list | [str] | List of username for follow. Follow action by username or hashtag will be taken randomly. | [] |
 | user_min_follow      | int | Check user before following them if they have X minimum of followers. Set 0 to disable                   | 0 |
 | user_max_follow      | int | Check user before following them if they have X maximum of followers. Set 0 to disable                   | 0 |
 | follow_time_enabled  | bool| Whether to wait seconds set in follow_time before unfollowing | True |

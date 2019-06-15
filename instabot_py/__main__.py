@@ -153,6 +153,13 @@ def setupinteractive(config, config_location="instabot.config.ini"):
         ["follow4follow", "f4f", "cute", "l:212999109"]
     )
 
+    config["DEFAULT"]["follow_username_list"] = json.dumps(
+        [
+            "cristiano", "arianagrande", "selenagomez", "therock",
+            "kimkardashian", "kyliejenner", "beyonce", "leomessi"
+        ]
+    )
+
     config["DEFAULT"]["tag_blacklist"] = json.dumps(["rain", "thunderstorm"])
 
     config["DEFAULT"]["unwanted_username_list"] = json.dumps(
