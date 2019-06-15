@@ -121,6 +121,7 @@ class InstaBot:
         self.comments_per_day = config.get("comments_per_day")
         if self.comments_per_day > 0:
             self.comments_delay = self.time_in_day / self.comments_per_day
+        self.generate_comment_with_space = config.get("generate_comment_with_space")
 
         # Don't like if media have more than n likes.
         self.media_max_like = config.get("media_max_like")
@@ -1056,7 +1057,10 @@ class InstaBot:
         c_list = list(itertools.product(*self.comment_list))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
-        res = " ".join(random.choice(c_list))
+        if self.generate_comment_with_space:
+            res = " ".join(random.choice(c_list))
+        else:
+            res = "".join(random.choice(c_list))
         for s, r in repl:
             res = res.replace(s, r)
         return res.capitalize()

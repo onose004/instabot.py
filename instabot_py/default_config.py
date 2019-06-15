@@ -79,6 +79,7 @@ DEFAULT_CONFIG = {
         ],
         [".", "..", "...", "!", "!!", "!!!"],
     ],
+    "generate_comment_with_space": True,
     "proxy": "",
     "unfollow_per_day": 0,
     "follow_per_day": 0,

@@ -98,6 +98,7 @@ def setupinteractive(config, config_location="instabot.config.ini"):
         "password": "none",
         "like_per_day": 709,
         "comments_per_day": 31,
+        "generate_comment_with_space": True,
         "max_like_for_one_tag": 36,
         "follow_per_day": 260,
         "follow_time": 36000,
