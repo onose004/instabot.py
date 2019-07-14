@@ -786,7 +786,7 @@ class InstaBot:
             )
             if (dns == 0 or dne < dns) and dne != 0:
                 # ------------------- Get media_id -------------------
-                if len(self.media_by_tag) == 0:
+                if len(self.media_by_tag) == 0 and len(self.tag_list) > 0:
                     self.get_media_id_by_tag(random.choice(self.tag_list))
                     self.this_tag_like_count = 0
                     self.max_tag_like_count = random.randint(
@@ -847,7 +847,8 @@ class InstaBot:
                     self.media_by_tag = [0]
             # Del first media_id
         try:
-            del self.media_by_tag[0]
+            if len(self.tag_list) > 0:
+                del self.media_by_tag[0]
         except:
             self.logger.debug("Could not remove media")
 
@@ -1000,8 +1001,7 @@ class InstaBot:
             return
         if (
             time.time() > self.next_iteration["Follow"]
-            and self.follow_per_day != 0
-            and len(self.media_by_tag) > 0
+            and self.follow_per_day > 0
         ):
             if id_get_by_target_username == self.user_id:
                 self.logger.debug("Keep calm - It's your own profile ;)")
@@ -1071,12 +1071,17 @@ class InstaBot:
                 )
 
     def follow_with_determine_target_method(self):
-        true_or_false = [True, False]
-        if len(self.follow_username_list) == 0 or random.choice(true_or_false):
-            self.new_auto_mod_follow()
-        else:
+        det_mod_follow_with_username = random.choice([True, False])
+        if len(self.tag_list) < 1:
+            det_mod_follow_with_username = True
+        if len(self.follow_username_list) < 1:
+            det_mod_follow_with_username = False
+
+        if det_mod_follow_with_username:
             target_user = random.choice(self.follow_username_list)
             self.new_auto_mod_follow_with_username(target_user)
+        else:
+            self.new_auto_mod_follow()
 
     def populate_from_feed(self):
         self.get_media_id_recent_feed()
