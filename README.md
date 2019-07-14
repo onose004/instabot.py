@@ -90,6 +90,7 @@ The `%username%.session` file stores your session with Instagram to avoid re-log
 | comments_per_day     | int | Comments to post per day                             | 0    |
 | comment_list         | [[str]] | List of word lists for comment generation. @username@ will be replaced by the media owner's username     | [['this', 'your'], ['photo', 'picture', 'pic', 'shot'], ['is', 'looks', 'is really'], ['great', 'super', 'good'], ['.', '...', '!', '!!']] |
 | tag_list             | [str] | Tags to use for finding posts by hasthag or location(l:locationid from e.g. https://www.instagram.com/explore/locations/212999109/los-angeles-california/)                     | ['cat', 'car', 'dog', 'l:212999109'] |
+| keywords             | [str] | Words to use for finding profiles with username or biography contain these words | [] |
 | tag_blacklist        | [str] | Tags to ignore when liking posts                   | [] |
 | user_blacklist       | {str: str} | Users whose posts to ignore. Example: `{"username": "", "username2": ""}` type only the key and leave value empty -- it will be populated with userids on startup.                | {} |
 | max_like_for_one_tag | int | How many media of a given tag to like at once (out of 21) | 5 |
@@ -116,7 +117,7 @@ The following video tutorials demo setting up and running the bot:
 
 ## Instabot with yaml config
 By default, instabot looks for configuration file (instabot.config.yml)
-it could be changed by exporting environement varibale with the full path
+it could be changed by exporting environment varibale with the full path
 ````bash
 export INSTABOT_CONFIG_FILE=instabot2.config.yml
 ````
